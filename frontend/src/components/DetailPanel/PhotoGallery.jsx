@@ -3,6 +3,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import styles from './PhotoGallery.module.css'
 
 export function PhotoGallery({ urls }) {
+  // Early return BEFORE any hooks to avoid React hooks count mismatch
+  if (!urls?.length) return null
+
   const [index, setIndex] = useState(0)
   const [lightbox, setLightbox] = useState(false)
   const stripRef = useRef(null)
@@ -10,8 +13,6 @@ export function PhotoGallery({ urls }) {
 
   // Keep indexRef in sync
   useEffect(() => { indexRef.current = index }, [index])
-
-  if (!urls?.length) return null
 
   function scrollToIndex(i) {
     const strip = stripRef.current

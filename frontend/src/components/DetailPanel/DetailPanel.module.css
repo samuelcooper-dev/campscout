@@ -2,7 +2,8 @@
 
 .panel {
   width: var(--detail-width);
-  min-width: var(--detail-width);
+  min-width: min(var(--detail-width), 35vw);  /* Allow shrinking on smaller screens */
+  max-width: var(--detail-width);
   background: var(--color-panel);
   border-left: 1px solid var(--color-border);
   display: flex;
