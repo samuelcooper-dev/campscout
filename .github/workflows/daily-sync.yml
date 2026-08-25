@@ -1,14 +1,22 @@
-name: Daily SE Availability Sync
+name: Daily Weather & Availability Sync
 
 on:
   schedule:
-    - cron: '0 5 * * *'
+    # Run daily at 6:00 AM UTC (avoids GitHub Actions peak hours)
+    - cron: '0 6 * * *'
   workflow_dispatch:
+  # Also run on push to master to ensure pipeline stays active
+  push:
+    branches:
+      - master
+    paths:
+      - 'src/**'
+      - '.github/workflows/daily-sync.yml'
 
 jobs:
-  run-pipeline:
+  sync-data:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 240
 
     steps:
       - uses: actions/checkout@v4
@@ -20,8 +28,8 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Run SE availability pipeline
-        run: python -m src.flows.pipeline
+      - name: Sync weather and availability (all regions)
+        run: python -m src.flows.pipeline --weather-availability
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           RECREATION_GOV_API_KEY: ${{ secrets.RECREATION_GOV_API_KEY }}

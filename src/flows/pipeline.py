@@ -1,17 +1,16 @@
 """
 Top-level Prefect orchestrator for CampScout.
 
-Two schedules:
-  - metadata (weekly, Sunday 3 AM UTC): all 6 regions
-  - availability (daily, 5 AM UTC): SE only
+Daily schedule:
+  - weather + availability (daily, 6 AM UTC): all 6 regions
+  - Skips metadata/amenities/images (infrequent changes)
 
-Ingest flows run first (rec-gov, nps, noaa). Each is submitted with
-return_state=True so that a single source failing does not abort the run —
-failures are logged and the transform always runs after all three finish.
+Ingest flows run first (rec-gov for availability, noaa for weather). Each is
+submitted with return_state=True so that a single source failing does not abort
+the run — failures are logged and the transform always runs after both finish.
 
-Run / serve standalone:
-    python -m src.flows.pipeline          # one-off run
-    python -m src.flows.pipeline --serve  # register with Prefect server + schedule
+Run standalone:
+    python -m src.flows.pipeline --weather-availability  # daily sync (all regions)
 """
 import argparse
 import logging
@@ -145,23 +144,21 @@ def national_metadata_pipeline() -> None:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
-    parser = argparse.ArgumentParser(description="Run or serve the CampScout pipeline.")
+    parser = argparse.ArgumentParser(description="Run the CampScout pipeline.")
     parser.add_argument(
-        "--serve",
+        "--weather-availability",
         action="store_true",
-        help="Register with the Prefect server and run on schedule.",
+        help="Run daily weather + availability sync for all regions (default).",
     )
     parser.add_argument(
         "--national",
         action="store_true",
-        help="Run the national metadata pipeline (all 6 regions) instead of the daily SE pipeline.",
+        help="Run the national metadata pipeline (all 6 regions, includes metadata).",
     )
     args = parser.parse_args()
 
-    if args.serve:
-        # Register both schedules with Prefect server
-        pipeline.serve(name="campscout-daily", cron="0 5 * * *", timezone="UTC")
-    elif args.national:
+    if args.national:
         national_metadata_pipeline()
     else:
-        pipeline()
+        # Default: weather + availability for all regions
+        pipeline(regions=ALL_REGIONS, availability_regions=ALL_REGIONS)

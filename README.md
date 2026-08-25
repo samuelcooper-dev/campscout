@@ -6,12 +6,13 @@ Finding an open federal campsite shouldn't require five browser tabs, three gove
 
 > **Note:** The API is hosted on Render's free tier, which spins down after inactivity. The first request after a period of dormancy may take 30–60 seconds while the server cold-starts. Subsequent requests are fast.
 
-**Current data:** 3,961 campgrounds · 64,000+ individual campsites · 6 US regions · live daily availability for the Southeast
+**Current data:** 3,961 campgrounds · 64,000+ individual campsites · 6 US regions · live daily availability and weather nationwide
 
-**Best way to explore:** Open the **Southeast** region and click one of these three campgrounds — they have the most complete data (live availability, 7-day weather, photos, amenity chips, and wildlife/landscape/activity tags all populated):
-- **Springfield** (GA)
-- **Lake Rabun Beach Recreation Area** (GA)
-- **Cotton Hill** (GA)
+**Best way to explore:** Choose any region from the home page — all campgrounds include 7-day weather forecasts and campsite availability. Campgrounds with photos, amenity details, and wildlife/landscape/activity tags provide the most complete experience. Try these fully-populated examples:
+- **Southeast:** Springfield (GA), Lake Rabun Beach (GA), Cotton Hill (GA)
+- **Mountain/Rockies:** Explore Colorado and Wyoming campgrounds
+- **Pacific West:** California and Oregon coastal sites
+- **Northeast:** Acadia and Green Mountain regions
 
 ---
 
@@ -74,7 +75,7 @@ Set arrival and departure dates in the filter panel. Available site counts appea
 | Database | PostgreSQL + PostGIS (Neon) | Geospatial joins for NOAA station lookup are core, not an afterthought |
 | Backend | FastAPI + SQLAlchemy + GeoAlchemy2 | Async-friendly for polling multiple slow government APIs |
 | Frontend | React + react-leaflet | Map-first dashboard; OSM tiles avoid any Mapbox billing dependency |
-| Scheduling | GitHub Actions | 2,000 free minutes/month — enough for weekly metadata + daily availability syncs |
+| Scheduling | GitHub Actions | 2,000 free minutes/month — daily weather + availability sync for all regions |
 | Tag extraction | Rule-based regex/keyword | Deterministic, no LLM API dependency in a scheduled batch pipeline |
 | Deployment | Render (API) + Vercel (frontend) | Both free tiers, auto-deploy on push |
 
@@ -83,9 +84,8 @@ Set arrival and departure dates in the filter panel. Available site counts appea
 ## Architecture
 
 ```
-Recreation.gov + NPS  →  national metadata sync  (GitHub Actions, weekly)
-Recreation.gov        →  availability sync        (GitHub Actions, daily)
-NOAA                  →  weather forecasts        (on-demand, DB-cached 6h)
+Recreation.gov + NOAA →  daily weather + availability sync  (GitHub Actions, 6 AM UTC)
+                         All regions, cached and served via FastAPI
         ↓
 Ingestion layer (src/ingestion/)
   recreation_gov.py   per-facility polling, exponential backoff on rate limits
@@ -146,7 +146,7 @@ psql $DATABASE_URL -f src/storage/migrations/005_amenity_flags.sql
 psql $DATABASE_URL -f src/storage/migrations/006_availability_dedup.sql
 psql $DATABASE_URL -f src/storage/migrations/007_add_reserve_type.sql
 
-# 3. Run the pipeline (Southeast region)
+# 3. Run the pipeline (all regions)
 pip install -r requirements.txt
 python -m src.flows.pipeline
 
@@ -165,5 +165,5 @@ cd frontend && npm install && npm run dev
 
 - **Saved searches and alerts** — users set a region + date window and get notified when a site opens up; the availability table already has the data, it just needs a notification layer on top
 - **LLM-assisted tag extraction** — the rule-based extractor misses nuance in longer descriptions; a lightweight model fine-tuned on campground text would increase tag recall without adding latency to the pipeline (batch offline, not in-request)
-- **More regions for availability** — the pipeline is already region-aware; daily availability sync is currently Southeast-only to stay within the Recreation.gov rate limit on a single machine, but horizontal scaling across regions is straightforward
 - **Mobile-first layout** — the map dashboard works on mobile but wasn't designed for it; a bottom-sheet detail panel and touch-optimized marker clustering would make it usable for trip planning on the road
+- **Metadata refresh pipeline** — amenities, photos, and descriptions change infrequently; a separate weekly or on-demand metadata sync would keep core data fresh without daily API overhead
