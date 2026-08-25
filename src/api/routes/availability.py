@@ -11,7 +11,8 @@ from collections import defaultdict
 from datetime import date
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from cachetools import TTLCache
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
@@ -23,18 +24,37 @@ log = logging.getLogger(__name__)
 
 router = APIRouter()
 
+# Cache availability queries — 5 min TTL since availability updates hourly
+_availability_cache: TTLCache = TTLCache(maxsize=128, ttl=300)
+
 
 @router.get("/{campground_id}/availability", response_model=AvailabilityResponse)
 def get_availability(
     campground_id: int,
+    response: Response,
     db: Annotated[Session, Depends(get_db)],
     start: Annotated[date, Query(description="Start date (inclusive), ISO format YYYY-MM-DD")],
     end: Annotated[date, Query(description="End date (inclusive), ISO format YYYY-MM-DD")],
 ) -> AvailabilityResponse:
-    campground = db.query(Campground).filter(Campground.id == campground_id).first()
+    cache_key = (campground_id, start, end)
+    cached = _availability_cache.get(cache_key)
+    if cached is not None:
+        response.headers["Cache-Control"] = "public, max-age=300, stale-while-revalidate=60"
+        response.headers["X-Cache"] = "HIT"
+        return cached
+
+    # Check campground exists and get availability_fetched_at (only fetch needed columns)
+    campground = db.query(
+        Campground.id, Campground.availability_fetched_at
+    ).filter(Campground.id == campground_id).first()
     if not campground:
         raise HTTPException(status_code=404, detail="Campground not found")
-    campsites = db.query(Campsite).filter(Campsite.campground_id == campground_id).all()
+
+    # Fetch only campsite fields needed for the response
+    campsites = db.query(
+        Campsite.id, Campsite.rec_campsite_id, Campsite.name, Campsite.loop,
+        Campsite.site_type, Campsite.reserve_type
+    ).filter(Campsite.campground_id == campground_id).all()
     if not campsites:
         return AvailabilityResponse(sites=[], available_site_count=0, fcfs_only=False, no_data=True, start=start, end=end)
 
@@ -43,7 +63,18 @@ def get_availability(
         return AvailabilityResponse(sites=[], available_site_count=0, syncing=True, start=start, end=end)
 
     campsite_ids = [c.id for c in campsites]
-    campsite_map = {c.id: c for c in campsites}
+    # Build campsite map with only the fields we fetched
+    campsite_map = {
+        c.id: {
+            "id": c.id,
+            "rec_campsite_id": c.rec_campsite_id,
+            "name": c.name,
+            "loop": c.loop,
+            "site_type": c.site_type,
+            "reserve_type": c.reserve_type,
+        }
+        for c in campsites
+    }
 
     # Latest snapshot per (campsite_id, date) — availability table is append-only
     subq = (
@@ -83,11 +114,11 @@ def get_availability(
         avail_dates = sorted(s.date for s in snapshots if s.status == "Available")
         windows.append(
             CampsiteWindow(
-                rec_campsite_id=campsite.rec_campsite_id,
-                name=campsite.name,
-                loop=campsite.loop,
-                site_type=campsite.site_type,
-                reserve_type=campsite.reserve_type,
+                rec_campsite_id=campsite["rec_campsite_id"],
+                name=campsite["name"],
+                loop=campsite["loop"],
+                site_type=campsite["site_type"],
+                reserve_type=campsite["reserve_type"],
                 available_dates=avail_dates,
                 total_dates=len(snapshots),
             )
@@ -102,7 +133,7 @@ def get_availability(
         "walk" in (c.site_type or "").lower() for c in campsites
     )
 
-    return AvailabilityResponse(
+    result = AvailabilityResponse(
         sites=windows,
         available_site_count=available_site_count,
         fcfs_only=fcfs_only,
@@ -110,3 +141,8 @@ def get_availability(
         start=start,
         end=end,
     )
+
+    _availability_cache[cache_key] = result
+    response.headers["Cache-Control"] = "public, max-age=300, stale-while-revalidate=60"
+    response.headers["X-Cache"] = "MISS"
+    return result
