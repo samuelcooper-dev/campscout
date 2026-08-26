@@ -1,5 +1,5 @@
 """
-Prefect flow wrapping the 8-step transform pipeline.
+Prefect flow wrapping the 9-step transform pipeline.
 
 Each step in src/transform/run.py becomes a @task.
 Steps must run in order — later steps depend on data committed by earlier ones.
@@ -16,6 +16,7 @@ from prefect import flow, task
 from ..storage.database import SessionLocal
 from ..transform.run import (
     ALL_STEPS,
+    prune_stale_data,
     transform_alerts,
     transform_availability,
     transform_campgrounds,
@@ -87,6 +88,13 @@ def step_tags() -> None:
         transform_tags(db)
 
 
+@task(name="transform-prune-stale", retries=2, retry_delay_seconds=30)
+def step_prune_stale() -> None:
+    """Delete past-date availability and weather rows."""
+    with SessionLocal() as db:
+        prune_stale_data(db)
+
+
 _STEP_TASKS = {
     "campgrounds": step_campgrounds,
     "nps_link": step_nps_link,
@@ -96,6 +104,7 @@ _STEP_TASKS = {
     "alerts": step_alerts,
     "weather": step_weather,
     "tags": step_tags,
+    "prune_stale": step_prune_stale,
 }
 
 
@@ -104,7 +113,7 @@ def transform_flow(steps: list[str] = ALL_STEPS) -> None:
     """
     Run the transform pipeline.
 
-    Steps execute in the order provided (default: all 8 in dependency order).
+    Steps execute in the order provided (default: all 9 in dependency order).
     Each step is a separate Prefect task so failures are individually tracked.
     """
     for step in steps:

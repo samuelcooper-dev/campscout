@@ -32,32 +32,6 @@ ALL_REGIONS = ["southeast", "northeast", "great_lakes", "plains", "mountain", "p
 DEFAULT_AVAILABILITY_REGIONS = ["southeast"]
 
 
-@task(name="prune-past-availability")
-def prune_past_availability() -> None:
-    """Delete availability_snapshots rows with date < today."""
-    import sqlalchemy
-    from ..storage.database import SessionLocal
-    with SessionLocal() as db:
-        n = db.execute(
-            sqlalchemy.text("DELETE FROM availability_snapshots WHERE date < CURRENT_DATE")
-        ).rowcount
-        db.commit()
-    log.info("Pruned %d past availability rows", n)
-
-
-@task(name="prune-past-weather")
-def prune_past_weather() -> None:
-    """Delete weather_forecasts rows with forecast_date < today."""
-    import sqlalchemy
-    from ..storage.database import SessionLocal
-    with SessionLocal() as db:
-        n = db.execute(
-            sqlalchemy.text("DELETE FROM weather_forecasts WHERE forecast_date < CURRENT_DATE")
-        ).rowcount
-        db.commit()
-    log.info("Pruned %d past weather rows", n)
-
-
 @flow(name="campscout-daily")
 def pipeline(
     regions: list[str] = DEFAULT_AVAILABILITY_REGIONS,
@@ -66,9 +40,9 @@ def pipeline(
     """
     Full CampScout pipeline:
       1. Ingest from Recreation.gov, NPS, and NOAA for the specified regions.
-      2. Run the transform pipeline regardless of partial ingest failures.
-      3. Prune past-date availability and weather rows.
-      4. Refresh materialized view.
+      2. Run the transform pipeline regardless of partial ingest failures
+         (includes pruning past-date availability and weather rows).
+      3. Refresh materialized view.
 
     Default schedule: SE metadata + SE availability (daily).
     For weekly national metadata sync, call with regions=ALL_REGIONS.
@@ -97,11 +71,8 @@ def pipeline(
             logger.info("Ingest flow '%s' completed successfully", name)
 
     # --- Transform phase --- always runs, even if some ingest flows failed
+    # Note: transform_flow includes prune_stale step which cleans past-date data
     transform_flow()
-
-    # --- Prune stale data ---
-    prune_past_availability()
-    prune_past_weather()
 
     # --- Refresh materialized view --- zero-downtime concurrent refresh
     try:
