@@ -36,6 +36,7 @@ DEFAULT_AVAILABILITY_REGIONS = ["southeast"]
 def pipeline(
     regions: list[str] = DEFAULT_AVAILABILITY_REGIONS,
     availability_regions: list[str] = DEFAULT_AVAILABILITY_REGIONS,
+    availability_only: bool = False,
 ) -> None:
     """
     Full CampScout pipeline:
@@ -46,13 +47,18 @@ def pipeline(
 
     Default schedule: SE metadata + SE availability (daily).
     For weekly national metadata sync, call with regions=ALL_REGIONS.
+
+    Args:
+        regions: regions to sync metadata for
+        availability_regions: regions to sync availability for
+        availability_only: if True, skip campsite metadata (daily sync mode)
     """
     logger = get_run_logger()
 
     # --- Ingest phase ---
     # return_state=True means a failing subflow returns a Failed State instead
     # of raising, so we can log and continue.
-    rec_state = rec_gov_flow(regions=regions, return_state=True)
+    rec_state = rec_gov_flow(regions=regions, availability_only=availability_only, return_state=True)
     nps_state = nps_flow(regions=regions, return_state=True)
     noaa_state = noaa_flow(return_state=True)
 
@@ -131,5 +137,5 @@ if __name__ == "__main__":
     if args.national:
         national_metadata_pipeline()
     else:
-        # Default: weather + availability for all regions
-        pipeline(regions=ALL_REGIONS, availability_regions=ALL_REGIONS)
+        # Daily sync: availability only (skip metadata)
+        pipeline(regions=ALL_REGIONS, availability_regions=ALL_REGIONS, availability_only=True)

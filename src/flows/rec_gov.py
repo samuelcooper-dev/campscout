@@ -13,7 +13,7 @@ import os
 
 import httpx
 from dotenv import load_dotenv
-from prefect import flow, task
+from prefect import flow, task, unmapped
 
 from ..ingestion.recreation_gov import (
     DEFAULT_REGIONS,
@@ -62,11 +62,32 @@ def fetch_availability(facility_id: str) -> None:
         ingest_availability(client, db, facility_id)
 
 
+@task(name="rec-gov-process-facility", retries=2, retry_delay_seconds=30)
+def process_facility(facility_id: str, availability_only: bool = False) -> None:
+    """Process a single facility: fetch campsites (optional) and availability."""
+    api_key = os.environ["RECREATION_GOV_API_KEY"]
+    with (
+        httpx.Client(headers={"apikey": api_key}, timeout=30) as client,
+        SessionLocal() as db,
+    ):
+        if not availability_only:
+            try:
+                ingest_campsites(client, db, facility_id)
+            except Exception as exc:
+                log.error("Campsite ingest failed facility=%s: %s", facility_id, exc)
+
+        try:
+            ingest_availability(client, db, facility_id)
+        except Exception as exc:
+            log.error("Availability ingest failed facility=%s: %s", facility_id, exc)
+
+
 @flow(name="rec-gov-ingest")
 def rec_gov_flow(
     regions: list[str] = DEFAULT_REGIONS,
     states: list[str] | None = None,
     limit: int | None = None,
+    availability_only: bool = False,
 ) -> None:
     """
     Ingest Recreation.gov facilities, campsites, and availability.
@@ -75,6 +96,7 @@ def rec_gov_flow(
         regions: region slugs to ingest (resolved to state lists)
         states: explicit state override (takes precedence over regions)
         limit: max facilities — useful for testing
+        availability_only: if True, skip campsite metadata fetch (daily sync mode)
     """
     if states is None:
         states = []
@@ -82,18 +104,10 @@ def rec_gov_flow(
             states.extend(REGION_STATES.get(region, []))
 
     facility_ids = fetch_facilities(states, limit)
-    log.info("Ingested %d facilities", len(facility_ids))
+    log.info("Processing %d facilities (availability_only=%s)", len(facility_ids), availability_only)
 
-    for fid in facility_ids:
-        try:
-            fetch_campsites(fid)
-        except Exception as exc:
-            log.error("Campsite ingest failed facility=%s: %s", fid, exc)
-
-        try:
-            fetch_availability(fid)
-        except Exception as exc:
-            log.error("Availability ingest failed facility=%s: %s", fid, exc)
+    # Parallel processing with concurrency limit via tags
+    process_facility.map(facility_ids, availability_only=unmapped(availability_only))
 
 
 if __name__ == "__main__":

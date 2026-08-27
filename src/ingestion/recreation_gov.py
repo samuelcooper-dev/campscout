@@ -206,6 +206,7 @@ def run(
     regions: list[str] = DEFAULT_REGIONS,
     states: list[str] | None = None,
     limit: int | None = None,
+    availability_only: bool = False,
 ) -> None:
     """
     Run the Recreation.gov ingestion for the specified regions (or explicit states).
@@ -214,6 +215,7 @@ def run(
         regions: list of region slugs (e.g. ["southeast", "northeast"])
         states: explicit state list — overrides regions if provided
         limit: max facilities to ingest (for testing)
+        availability_only: if True, skip campsite metadata fetch (daily sync mode)
     """
     api_key = os.environ["RECREATION_GOV_API_KEY"]
 
@@ -231,10 +233,11 @@ def run(
         log.info("Ingested %d facilities", len(facility_ids))
 
         for fid in facility_ids:
-            try:
-                ingest_campsites(client, db, fid)
-            except Exception as exc:
-                log.error("Campsite ingest failed facility=%s: %s", fid, exc)
+            if not availability_only:
+                try:
+                    ingest_campsites(client, db, fid)
+                except Exception as exc:
+                    log.error("Campsite ingest failed facility=%s: %s", fid, exc)
 
             try:
                 ingest_availability(client, db, fid)
@@ -252,5 +255,7 @@ if __name__ == "__main__":
                         help="Explicit state codes — overrides --regions")
     parser.add_argument("--limit", type=int, default=None,
                         help="Max facilities to fetch — useful for testing")
+    parser.add_argument("--availability-only", action="store_true",
+                        help="Skip campsite metadata, fetch availability only (daily sync mode)")
     args = parser.parse_args()
-    run(regions=args.regions, states=args.states, limit=args.limit)
+    run(regions=args.regions, states=args.states, limit=args.limit, availability_only=args.availability_only)
