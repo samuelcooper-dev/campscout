@@ -5,8 +5,11 @@ import { SearchBar } from './components/SearchBar/SearchBar.jsx'
 import { FilterPanel } from './components/FilterPanel/FilterPanel.jsx'
 import { DetailPanel } from './components/DetailPanel/DetailPanel.jsx'
 import { HomePage } from './components/HomePage/HomePage.jsx'
+import { DemoBanner } from './components/DemoBanner/DemoBanner.jsx'
+import { ErrorBoundary } from './components/shared/ErrorBoundary.jsx'
 import { useCampgrounds } from './hooks/useCampgrounds.js'
 import { fetchRegions } from './api/client.js'
+import { isRegionEnabled } from './config/demo.js'
 import styles from './App.module.css'
 
 const REGION_ICONS = {
@@ -23,7 +26,9 @@ function RegionSwitcher({ allRegions }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
 
-  const current = allRegions.find((r) => r.id === selectedRegion)
+  // Filter to only show enabled regions in demo mode
+  const enabledRegions = allRegions.filter((r) => isRegionEnabled(r.id))
+  const current = enabledRegions.find((r) => r.id === selectedRegion)
 
   useEffect(() => {
     if (!open) return
@@ -39,7 +44,17 @@ function RegionSwitcher({ allRegions }) {
     }
   }, [open])
 
-  if (!allRegions.length) return null
+  if (!enabledRegions.length) return null
+
+  // Hide switcher if only one region is enabled
+  if (enabledRegions.length === 1) {
+    return (
+      <div className={styles.regionLabel}>
+        <span>{REGION_ICONS[selectedRegion] ?? '📍'}</span>
+        <span>{current?.name ?? 'Region'}</span>
+      </div>
+    )
+  }
 
   return (
     <div ref={ref} className={styles.regionSwitcher}>
@@ -57,7 +72,7 @@ function RegionSwitcher({ allRegions }) {
 
       {open && (
         <div className={styles.dropdown} role="listbox">
-          {allRegions.map((r) => (
+          {enabledRegions.map((r) => (
             <button
               key={r.id}
               className={`${styles.dropdownItem} ${r.id === selectedRegion ? styles.dropdownItemActive : ''}`}
@@ -91,6 +106,7 @@ function Dashboard({ regionData, allRegions }) {
 
   return (
     <div className={styles.layout}>
+      <DemoBanner />
       <header className={styles.topBar}>
         <button className={styles.logo} onClick={() => setSelectedRegion(null)} type="button">
           CampScout
@@ -102,14 +118,20 @@ function Dashboard({ regionData, allRegions }) {
       </header>
 
       <div className={styles.body}>
-        <FilterPanel open={filterOpen} />
-        <MapView
-          campgrounds={campgrounds}
-          dataAsOf={dataAsOf}
-          onBboxChange={setBbox}
-          regionData={regionData}
-        />
-        <DetailPanel />
+        <ErrorBoundary fallbackMessage="Unable to load filters. Please refresh the page.">
+          <FilterPanel open={filterOpen} />
+        </ErrorBoundary>
+        <ErrorBoundary fallbackMessage="Unable to load map. Please check your connection and refresh.">
+          <MapView
+            campgrounds={campgrounds}
+            dataAsOf={dataAsOf}
+            onBboxChange={setBbox}
+            regionData={regionData}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary fallbackMessage="Unable to load campground details.">
+          <DetailPanel />
+        </ErrorBoundary>
       </div>
 
       <button
@@ -145,8 +167,10 @@ function AppInner() {
 
 export default function App() {
   return (
-    <AppProvider>
-      <AppInner />
-    </AppProvider>
+    <ErrorBoundary>
+      <AppProvider>
+        <AppInner />
+      </AppProvider>
+    </ErrorBoundary>
   )
 }

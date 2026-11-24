@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { fetchRegions, fetchCampgrounds } from '../../api/client.js'
 import { useApp } from '../../context/AppContext.jsx'
+import { DEMO_MODE, isRegionEnabled, DISABLED_REGION_MESSAGE } from '../../config/demo.js'
 import styles from './HomePage.module.css'
 
 const REGION_ICONS = {
@@ -141,24 +142,38 @@ export function HomePage() {
           </div>
         ) : (
           <div className={styles.regionGrid}>
-            {regions.map((r) => (
-              <button
-                key={r.id}
-                className={styles.regionCard}
-                onClick={() => setSelectedRegion(r.id)}
-                type="button"
-              >
-                <span className={styles.regionIcon}>{REGION_ICONS[r.id] ?? '📍'}</span>
-                <span className={styles.regionName}>{r.name}</span>
-                <span className={styles.regionStates}>
-                  {r.states.slice(0, 5).join(' · ')}
-                  {r.states.length > 5 ? ` +${r.states.length - 5}` : ''}
-                </span>
-                <span className={styles.regionCount}>
-                  {r.campground_count.toLocaleString()} campgrounds
-                </span>
-              </button>
-            ))}
+            {regions.map((r) => {
+              const enabled = isRegionEnabled(r.id)
+              return (
+                <button
+                  key={r.id}
+                  className={`${styles.regionCard} ${!enabled ? styles.regionCardDisabled : ''}`}
+                  onClick={() => enabled && setSelectedRegion(r.id)}
+                  disabled={!enabled}
+                  type="button"
+                  aria-disabled={!enabled}
+                >
+                  {!enabled && <span className={styles.demoBadge}>DEMO</span>}
+                  <span className={styles.regionIcon}>{REGION_ICONS[r.id] ?? '📍'}</span>
+                  <span className={styles.regionName}>{r.name}</span>
+                  <span className={styles.regionStates}>
+                    {enabled ? (
+                      <>
+                        {r.states.slice(0, 5).join(' · ')}
+                        {r.states.length > 5 ? ` +${r.states.length - 5}` : ''}
+                      </>
+                    ) : (
+                      DISABLED_REGION_MESSAGE
+                    )}
+                  </span>
+                  {enabled && (
+                    <span className={styles.regionCount}>
+                      {r.campground_count.toLocaleString()} campgrounds
+                    </span>
+                  )}
+                </button>
+              )
+            })}
           </div>
         )}
       </section>

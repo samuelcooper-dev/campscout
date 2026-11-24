@@ -50,7 +50,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 24px; /* 4-point grid: increased from 20px */
 }
 
 .eyebrow {
@@ -65,10 +65,10 @@
 .heroTitle {
   font-size: 76px;
   font-weight: 800;
-  line-height: 1.04;
+  line-height: 1.1; /* Increased from 1.04 for better readability */
   letter-spacing: -0.035em;
   color: #e8dfc8;
-  margin: 0;
+  margin: 0 0 8px 0; /* Add bottom margin per typography principles */
 }
 
 .heroSub {
@@ -80,26 +80,33 @@
 
 .heroCta {
   display: inline-block;
-  margin-top: 12px;
-  padding: 14px 36px;
+  margin-top: 16px; /* 4-point grid: increased from 12px */
+  padding: 16px 40px; /* Increased from 14px 36px for better touch target (minimum 44px height) */
   background: #2e6b2e;
   color: #e8dfc8;
   font-weight: 700;
-  font-size: 15px;
-  border-radius: 8px;
+  font-size: 16px; /* Increased from 15px for better readability */
+  border-radius: 10px; /* Increased from 8px for modern feel */
   text-decoration: none;
-  transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
-  box-shadow: 0 4px 20px rgba(46, 107, 46, 0.35);
+  line-height: 1.2;
+  white-space: nowrap; /* Per button principles: labels don't wrap */
+  transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+  box-shadow: 0 4px 20px rgba(46, 107, 46, 0.4); /* Increased opacity */
+  min-height: 52px; /* Ensure 44px minimum touch target + padding */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .heroCta:hover {
   background: #357535;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 28px rgba(46, 107, 46, 0.5);
+  transform: translateY(-3px); /* Increased from -2px */
+  box-shadow: 0 8px 32px rgba(46, 107, 46, 0.6); /* Increased shadow depth */
 }
 
 .heroCta:active {
-  transform: translateY(0);
+  transform: translateY(-1px); /* Subtle depression instead of full reset */
+  box-shadow: 0 4px 20px rgba(46, 107, 46, 0.5);
 }
 
 /* ── Gallery ────────────────────────────────────────────────────────────── */
@@ -112,15 +119,16 @@
 .sectionHeader {
   text-align: center;
   padding: 0 24px;
-  margin-bottom: 40px;
+  margin-bottom: 48px; /* 4-point grid: increased from 40px */
 }
 
 .sectionTitle {
-  font-size: 28px;
+  font-size: 32px; /* Increased from 28px for better hierarchy */
   font-weight: 700;
   color: #c8a870;
   letter-spacing: -0.02em;
-  margin: 0 0 8px;
+  line-height: 1.2; /* Add explicit line-height */
+  margin: 0 0 12px; /* Increased from 8px per 4-point grid */
 }
 
 .sectionSub {
@@ -196,29 +204,30 @@
 /* ── About ──────────────────────────────────────────────────────────────── */
 
 .aboutSection {
-  padding: 96px 24px;
+  padding: 112px 24px; /* Increased from 96px for better section rhythm */
   background: #e8dfc8;
 }
 
 .aboutInner {
-  max-width: 760px;
+  max-width: 800px; /* Increased from 760px */
   margin: 0 auto;
   text-align: center;
 }
 
 .aboutTitle {
-  font-size: 42px;
+  font-size: 48px; /* Increased from 42px for better hierarchy */
   font-weight: 800;
   color: #1b3d1b;
   letter-spacing: -0.03em;
-  margin: 0 0 32px;
+  line-height: 1.15;
+  margin: 0 0 32px; /* Per typography principles: heading → paragraph spacing */
 }
 
 .aboutBody {
-  font-size: 17px;
-  line-height: 1.75;
-  color: #3a3020;
-  max-width: 580px;
+  font-size: 18px; /* Increased from 17px for better readability */
+  line-height: 1.6; /* Adjusted from 1.75 to match typography principles */
+  color: #2d2416; /* Darkened from #3a3020 for better contrast (AA compliance) */
+  max-width: 640px; /* Increased from 580px */
   margin: 0 auto 64px;
 }
 
@@ -226,29 +235,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 48px; /* Add explicit gap for better spacing control */
 }
 
 .stat {
-  flex: 1;
+  flex: 0 1 auto; /* Changed from flex: 1 to prevent excessive stretching */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px; /* 4-point grid: increased from 6px */
+  min-width: 140px; /* Ensure consistent card width */
 }
 
 .statNum {
-  font-size: 34px;
+  font-size: 40px; /* Increased from 34px for better prominence */
   font-weight: 800;
-  color: #2e6b2e;
+  color: #257525; /* Darkened from #2e6b2e for better contrast on cream background */
   letter-spacing: -0.02em;
   line-height: 1;
 }
 
 .statLabel {
-  font-size: 13px;
-  color: #6b5a3a;
+  font-size: 14px; /* Increased from 13px for better readability */
+  color: #4a3828; /* Darkened from #6b5a3a for better contrast (AA compliance) */
   text-align: center;
   line-height: 1.4;
+  font-weight: 500; /* Add weight for better hierarchy */
 }
 
 .statDivider {
@@ -266,62 +278,104 @@
 }
 
 .regionGrid {
-  max-width: 900px;
+  max-width: 1000px; /* Increased from 900px for better card proportions */
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 20px; /* 4-point grid: increased from 16px */
 }
 
 .regionCard {
   background: #191910;
-  border: 1.5px solid rgba(200, 168, 112, 0.18);
-  border-radius: 10px;
-  padding: 24px 20px 20px;
+  border: 2px solid rgba(200, 168, 112, 0.2); /* Increased border width and opacity for better visibility */
+  border-radius: 12px; /* Increased from 10px for better visual weight */
+  padding: 24px; /* Uniform padding, removed asymmetry */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 6px;
+  gap: 8px; /* 4-point grid: increased from 6px */
   cursor: pointer;
   text-align: left;
-  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s, transform 0.1s;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s, transform 0.1s, opacity 0.15s;
+  position: relative;
+  min-height: 160px; /* Ensure consistent card height */
 }
 
 .regionCard:hover {
   border-color: #c8a870;
   background: #211f10;
-  box-shadow: 0 4px 24px rgba(200, 168, 112, 0.14);
-  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(200, 168, 112, 0.2); /* Increased shadow depth */
+  transform: translateY(-4px); /* Increased lift from -2px to -4px */
 }
 
 .regionCard:active {
   transform: translateY(0);
 }
 
+/* Demo mode: disabled regions */
+.regionCardDisabled {
+  opacity: 0.45; /* Slightly increased from 0.4 for better perception */
+  cursor: not-allowed;
+  background: #141410;
+  border-color: rgba(200, 168, 112, 0.1); /* Slightly increased from 0.08 */
+  position: relative;
+}
+
+.regionCardDisabled::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 100%);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.regionCardDisabled:hover {
+  border-color: rgba(200, 168, 112, 0.1);
+  background: #141410;
+  box-shadow: none;
+  transform: none;
+}
+
+.demoBadge {
+  position: absolute;
+  top: 12px; /* Increased from 8px for better spacing */
+  right: 12px; /* Increased from 8px for better spacing */
+  font-size: 10px; /* Increased from 9px for better readability */
+  font-weight: 800;
+  letter-spacing: 0.1em; /* Increased from 0.08em */
+  color: rgba(200, 168, 112, 0.7); /* Increased from 0.5 for better contrast */
+  background: rgba(200, 168, 112, 0.15); /* Increased from 0.1 */
+  padding: 4px 10px; /* Increased from 3px 8px per 4-point grid */
+  border-radius: 6px; /* Increased from 4px */
+  border: 1px solid rgba(200, 168, 112, 0.25); /* Increased from 0.15 */
+  z-index: 1;
+}
+
 .regionIcon {
-  font-size: 28px;
+  font-size: 36px; /* Increased from 28px for better prominence */
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 8px; /* 4-point grid: increased from 4px */
 }
 
 .regionName {
-  font-size: 16px;
+  font-size: 18px; /* Increased from 16px for better hierarchy */
   font-weight: 700;
   color: #e8dfc8;
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
 .regionStates {
-  font-size: 11px;
-  color: rgba(232, 223, 200, 0.4);
+  font-size: 12px; /* Increased from 11px for better readability */
+  color: rgba(232, 223, 200, 0.5); /* Increased opacity from 0.4 to 0.5 for better contrast */
   line-height: 1.4;
 }
 
 .regionCount {
-  font-size: 12px;
+  font-size: 13px; /* Increased from 12px */
   font-weight: 600;
   color: #c8a870;
-  margin-top: 4px;
+  margin-top: 8px; /* 4-point grid: increased from 4px */
 }
 
 /* ── Skeleton region cards ──────────────────────────────────────────────── */
@@ -380,15 +434,32 @@
 /* ── Responsive ─────────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
-  .heroTitle     { font-size: 52px; }
-  .aboutTitle    { font-size: 32px; }
-  .regionGrid    { grid-template-columns: repeat(2, 1fr); }
-  .stats         { flex-direction: column; gap: 32px; }
+  .heroTitle     { font-size: 56px; line-height: 1.1; }
+  .aboutTitle    { font-size: 36px; }
+  .sectionTitle  { font-size: 28px; }
+  .regionGrid    { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .regionCard    { min-height: 140px; padding: 20px; }
+  .regionIcon    { font-size: 32px; }
+  .stats         { flex-direction: column; gap: 40px; }
   .statDivider   { display: none; }
+  .stat          { min-width: auto; }
 }
 
 @media (max-width: 480px) {
-  .heroTitle     { font-size: 38px; }
+  .heroTitle     { font-size: 42px; line-height: 1.15; }
+  .heroSub       { font-size: 15px; }
+  .aboutTitle    { font-size: 32px; }
+  .aboutBody     { font-size: 17px; }
+  .sectionTitle  { font-size: 24px; }
   .regionGrid    { grid-template-columns: 1fr; }
-  .heroCta       { padding: 12px 28px; font-size: 14px; }
+  .regionCard    { min-height: 120px; padding: 16px; }
+  .regionIcon    { font-size: 28px; }
+  .regionName    { font-size: 16px; }
+  .heroCta       {
+    padding: 14px 32px;
+    font-size: 15px;
+    min-height: 48px; /* Maintain 44px+ touch target on mobile */
+  }
+  .statNum       { font-size: 36px; }
+  .statLabel     { font-size: 13px; }
 }

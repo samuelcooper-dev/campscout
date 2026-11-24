@@ -1,0 +1,66 @@
+.errorContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 24px;
+  background: var(--color-bg);
+}
+
+.errorCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 480px;
+  padding: 40px 32px;
+  background: var(--color-panel);
+  border: 2px solid rgba(192, 57, 43, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.errorIcon {
+  font-size: 48px;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+.errorTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.errorMessage {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.errorButton {
+  margin-top: 8px;
+  padding: 12px 24px;
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.12s;
+  min-height: 44px;
+}
+
+.errorButton:hover {
+  background: #357535;
+  transform: translateY(-1px);
+}
+
+.errorButton:active {
+  transform: translateY(0);
+}

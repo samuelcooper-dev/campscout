@@ -1,0 +1,35 @@
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* 4-point grid */
+  padding: 10px 16px; /* Increased from 8px for better touch target */
+  background: rgba(46, 107, 46, 0.2); /* Increased opacity from 0.15 */
+  border-bottom: 1px solid rgba(46, 107, 46, 0.35); /* Increased from 0.25 for better definition */
+  font-size: 12px;
+  font-weight: 700; /* Increased from 600 for better clarity */
+  color: #d4b880; /* Lightened from #c8a870 for better contrast on dark green */
+  letter-spacing: 0.05em; /* Increased from 0.03em */
+  text-transform: uppercase;
+}
+
+.icon {
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+.text {
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .banner {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+
+  .icon {
+    font-size: 12px;
+  }
+}

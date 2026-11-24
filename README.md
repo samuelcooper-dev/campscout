@@ -4,15 +4,18 @@ Finding an open federal campsite shouldn't require five browser tabs, three gove
 
 **[→ Try the live demo](https://campscout-delta.vercel.app)** — no sign-up required
 
+> **Demo Mode:** This portfolio demo showcases the Southeast region with full functionality. The app's architecture supports all 6 US regions (3,961 campgrounds nationwide), but the demo focuses on the Southeast to provide a focused, polished experience.
+
 > **Note:** The API is hosted on Render's free tier, which spins down after inactivity. The first request after a period of dormancy may take 30–60 seconds while the server cold-starts. Subsequent requests are fast.
 
-**Current data:** 3,961 campgrounds · 64,000+ individual campsites · 6 US regions · live daily availability and weather nationwide
+**Demo includes:** 847 Southeast campgrounds · Full availability data · 7-day weather forecasts · Wildlife/landscape/activity tags
 
-**Best way to explore:** Choose any region from the home page — all campgrounds include 7-day weather forecasts and campsite availability. Campgrounds with photos, amenity details, and wildlife/landscape/activity tags provide the most complete experience. Try these fully-populated examples:
-- **Southeast:** Springfield (GA), Lake Rabun Beach (GA), Cotton Hill (GA)
-- **Mountain/Rockies:** Explore Colorado and Wyoming campgrounds
-- **Pacific West:** California and Oregon coastal sites
-- **Northeast:** Acadia and Green Mountain regions
+**Best campgrounds to explore in demo:**
+- **Springfield Campground** (GA) — Full photo gallery, amenities, and tags
+- **Lake Rabun Beach** (GA) — Waterfront site with detailed descriptions
+- **Cotton Hill** (GA) — Comprehensive availability windows
+
+**Full production data:** The backend pipeline processes all 6 US regions (3,961 campgrounds, 64,000+ campsites) daily. The frontend demo mode is a configuration toggle — set `DEMO_MODE = false` in `frontend/src/config/demo.js` to enable all regions.
 
 ---
 
@@ -37,7 +40,9 @@ Recreation.gov tells you if a site is available. It doesn't tell you what wildli
 
 ### 1. Pick a Region
 
-The home page shows all six US regions with live campground counts pulled from the API. Selecting one snaps the map to that region's bounding box and loads its campgrounds.
+**Demo mode:** The home page displays all six US regions, but only the Southeast is interactive in this portfolio demo. This showcases the full data pipeline and UI capabilities while keeping the demo focused and performant. Other regions are visually disabled with a "DEMO" badge.
+
+In production mode (backend has data for all regions), all six regions are clickable and functional. Selecting a region snaps the map to its bounding box and loads its campgrounds.
 
 [![Home page with region cards](docs/screenshots/home.png)](https://campscout-delta.vercel.app)
 
