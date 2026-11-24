@@ -1,12 +1,29 @@
 .panel {
   width: 320px;
   min-width: 320px;
-  background: var(--color-panel);
-  border-right: 1px solid var(--color-border);
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 94, 60, 0.02) 2px,
+      rgba(139, 94, 60, 0.02) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 94, 60, 0.02) 2px,
+      rgba(139, 94, 60, 0.02) 4px
+    ),
+    linear-gradient(180deg, #dfd5b8 0%, #d8ceb0 100%);
+  border-right: 3px solid var(--color-accent);
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.3);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 0;
+  position: relative;
 }
 
 @media (max-width: 768px) {
@@ -53,19 +70,32 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  border-bottom: 2px solid var(--color-border);
+  border-bottom: 3px double var(--color-accent);
   position: sticky;
   top: 0;
-  background: var(--color-panel);
+  background:
+    repeating-linear-gradient(
+      45deg,
+      var(--color-panel),
+      var(--color-panel) 10px,
+      rgba(139, 94, 60, 0.03) 10px,
+      rgba(139, 94, 60, 0.03) 11px
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
 
 .title {
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 20px;
+  font-weight: 900;
   color: var(--color-text);
-  letter-spacing: -0.02em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  text-shadow:
+    2px 2px 0px rgba(0, 0, 0, 0.1),
+    -1px -1px 0px rgba(255, 255, 255, 0.5);
 }
 
 .clearBtn {
@@ -89,8 +119,17 @@
 
 .quickSection {
   padding: 16px;
-  border-bottom: 2px solid var(--color-border);
-  background: rgba(200, 168, 112, 0.05);
+  border-bottom: 3px solid var(--color-border);
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 20px,
+      rgba(200, 168, 112, 0.04) 20px,
+      rgba(200, 168, 112, 0.04) 21px
+    ),
+    linear-gradient(135deg, rgba(200, 168, 112, 0.08) 0%, rgba(46, 107, 46, 0.05) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .quickLabel {
@@ -120,26 +159,41 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 12px;
-  background: var(--color-bg);
-  border: 2px solid var(--color-border);
-  border-radius: 8px;
+  padding: 10px 14px;
+  background:
+    repeating-linear-gradient(45deg, var(--color-bg), var(--color-bg) 2px, rgba(139, 94, 60, 0.03) 2px, rgba(139, 94, 60, 0.03) 4px);
+  border: 2px solid var(--color-accent);
+  border-radius: 2px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-text);
   cursor: pointer;
   transition: all 0.15s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    2px 2px 0 rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .chip:hover {
   border-color: var(--color-primary);
   background: rgba(46, 107, 46, 0.1);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    3px 3px 0 rgba(0, 0, 0, 0.15);
 }
 
 .chipActive {
-  background: var(--color-primary);
+  background:
+    repeating-linear-gradient(135deg, var(--color-primary), var(--color-primary) 3px, rgba(0, 0, 0, 0.1) 3px, rgba(0, 0, 0, 0.1) 6px);
   border-color: var(--color-primary);
   color: #fff;
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    2px 2px 0 rgba(0, 0, 0, 0.2);
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
 }
 
 .chipIcon {
@@ -239,12 +293,16 @@
 }
 
 .sectionTitle {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 900;
   color: var(--color-text);
   margin: 0 0 12px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+  text-shadow:
+    1px 1px 0px rgba(0, 0, 0, 0.1),
+    -0.5px -0.5px 0px rgba(255, 255, 255, 0.5);
+  font-family: 'Georgia', 'Times New Roman', serif;
 }
 
 /* Checkbox labels */
@@ -294,22 +352,35 @@
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  padding: 12px 8px;
-  background: var(--color-bg);
-  border: 2px solid var(--color-border);
-  border-radius: 8px;
+  padding: 14px 10px;
+  background:
+    repeating-linear-gradient(45deg, var(--color-bg), var(--color-bg) 3px, rgba(139, 94, 60, 0.02) 3px, rgba(139, 94, 60, 0.02) 6px);
+  border: 2px solid var(--color-accent);
+  border-radius: 2px;
   cursor: pointer;
   transition: all 0.15s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    2px 2px 0 rgba(0, 0, 0, 0.08);
 }
 
 .emblemBtn:hover {
   border-color: var(--color-primary);
-  background: rgba(46, 107, 46, 0.05);
+  background: rgba(46, 107, 46, 0.08);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    3px 3px 0 rgba(0, 0, 0, 0.12);
 }
 
 .emblemActive {
-  background: rgba(46, 107, 46, 0.15);
+  background:
+    repeating-linear-gradient(135deg, rgba(46, 107, 46, 0.2), rgba(46, 107, 46, 0.2) 3px, rgba(46, 107, 46, 0.25) 3px, rgba(46, 107, 46, 0.25) 6px);
   border-color: var(--color-primary);
+  border-width: 3px;
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.15),
+    2px 2px 0 rgba(0, 0, 0, 0.15);
 }
 
 .emblemIcon {

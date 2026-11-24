@@ -5,6 +5,7 @@
 }
 
 :root {
+  /* Vintage NPS Color Palette - Parchment & Forest */
   --color-bg: #e8dfc8;
   --color-panel: #dfd5b8;
   --color-border: #b8a882;
@@ -17,12 +18,34 @@
   --color-info: #2980b9;
   --color-stale: #c78f2b;
   --color-accent: #8b5e3c;
-  --panel-width: 280px;
+
+  /* Layout */
+  --panel-width: 320px;
   --detail-width: 480px;
-  --topbar-height: 52px;
-  font-family: system-ui, -apple-system, sans-serif;
+  --topbar-height: 56px;
+
+  /* Vintage Typography */
+  font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 14px;
   color: var(--color-text);
+
+  /* Topographic Map Background Pattern */
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 50px,
+      rgba(139, 94, 60, 0.03) 50px,
+      rgba(139, 94, 60, 0.03) 51px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 50px,
+      rgba(139, 94, 60, 0.03) 50px,
+      rgba(139, 94, 60, 0.03) 51px
+    );
+  background-color: var(--color-bg);
 }
 
 html, body, #root {

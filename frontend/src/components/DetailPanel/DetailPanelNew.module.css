@@ -4,8 +4,24 @@
   width: var(--detail-width);
   min-width: min(var(--detail-width), 35vw);
   max-width: var(--detail-width);
-  background: var(--color-panel);
-  border-left: 1px solid var(--color-border);
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 94, 60, 0.02) 2px,
+      rgba(139, 94, 60, 0.02) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 94, 60, 0.02) 2px,
+      rgba(139, 94, 60, 0.02) 4px
+    ),
+    linear-gradient(180deg, #dfd5b8 0%, #d8ceb0 100%);
+  border-left: 3px solid var(--color-accent);
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.3);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -99,34 +115,46 @@
 
 .tabs {
   display: flex;
-  border-bottom: 2px solid var(--color-border);
-  background: var(--color-panel);
+  border-bottom: 3px double var(--color-accent);
+  background:
+    repeating-linear-gradient(45deg, var(--color-panel), var(--color-panel) 10px, rgba(139, 94, 60, 0.03) 10px, rgba(139, 94, 60, 0.03) 11px);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
 }
 
 .tab {
   flex: 1;
-  padding: 12px 8px;
-  font-size: 13px;
-  font-weight: 600;
+  padding: 14px 8px;
+  font-size: 14px;
+  font-weight: 700;
   color: var(--color-text-muted);
   background: none;
   border: none;
-  border-bottom: 3px solid transparent;
+  border-bottom: 4px solid transparent;
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  transition: all 0.15s;
   text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+  font-family: 'Georgia', 'Times New Roman', serif;
 }
 
 .tab:hover {
   color: var(--color-text);
-  background: rgba(0,0,0,0.03);
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139, 94, 60, 0.03) 2px, rgba(139, 94, 60, 0.03) 4px);
 }
 
 .tabActive {
   color: var(--color-primary);
   border-bottom-color: var(--color-primary);
-  background: rgba(46, 107, 46, 0.05);
+  background:
+    repeating-linear-gradient(135deg, rgba(46, 107, 46, 0.08), rgba(46, 107, 46, 0.08) 3px, rgba(46, 107, 46, 0.12) 3px, rgba(46, 107, 46, 0.12) 6px);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  text-shadow:
+    1px 1px 0px rgba(0, 0, 0, 0.1),
+    -0.5px -0.5px 0px rgba(255, 255, 255, 0.3);
 }
 
 /* ── Scrollable body ────────────────────────────────────────────────────── */
@@ -152,12 +180,16 @@
 }
 
 .sectionTitle {
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--color-text-muted);
+  letter-spacing: 0.1em;
+  color: var(--color-text);
   margin: 0;
+  text-shadow:
+    1px 1px 0px rgba(0, 0, 0, 0.1),
+    -0.5px -0.5px 0px rgba(255, 255, 255, 0.5);
+  font-family: 'Georgia', 'Times New Roman', serif;
 }
 
 /* ── Icon bubble rows (Activities / Landscape / Wildlife) ───────────────── */
@@ -221,12 +253,19 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
-  background: var(--color-primary-light);
+  padding: 8px 14px;
+  background:
+    repeating-linear-gradient(45deg, var(--color-primary-light), var(--color-primary-light) 2px, rgba(46, 107, 46, 0.15) 2px, rgba(46, 107, 46, 0.15) 4px);
   color: var(--color-primary);
-  border-radius: 10px;
+  border: 2px solid var(--color-primary);
+  border-radius: 2px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    1px 1px 0 rgba(0, 0, 0, 0.08);
 }
 
 .amenityIcon {
@@ -343,10 +382,14 @@
 }
 
 .wxCard {
-  background: var(--color-bg);
-  border: 2px solid var(--color-border);
-  border-radius: 8px;
+  background:
+    repeating-linear-gradient(45deg, var(--color-bg), var(--color-bg) 3px, rgba(139, 94, 60, 0.02) 3px, rgba(139, 94, 60, 0.02) 6px);
+  border: 3px solid var(--color-accent);
+  border-radius: 2px;
   overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    2px 2px 0 rgba(0, 0, 0, 0.08);
 }
 
 .wxCardHeader {
