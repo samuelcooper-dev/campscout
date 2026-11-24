@@ -1,0 +1,543 @@
+/* ── Panel shell ────────────────────────────────────────────────────────── */
+
+.panel {
+  width: var(--detail-width);
+  min-width: min(var(--detail-width), 35vw);
+  max-width: var(--detail-width);
+  background: var(--color-panel);
+  border-left: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    min-width: 0;
+    max-height: 65vh;
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+    border-radius: 16px 16px 0 0;
+    z-index: 450;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.35);
+    animation: slideUp 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Sticky top: photo + name bar ──────────────────────────────────────── */
+
+.stickyTop {
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nameBar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 7px 12px;
+  gap: 8px;
+  background: var(--color-panel);
+}
+
+.nameGroup {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-text);
+}
+
+.state {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--color-text-muted);
+  padding: 2px 6px;
+  border-radius: 4px;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.closeBtn:hover { background: var(--color-bg); }
+
+/* ── Tabs ───────────────────────────────────────────────────────────────── */
+
+.tabs {
+  display: flex;
+  border-bottom: 2px solid var(--color-border);
+  background: var(--color-panel);
+  flex-shrink: 0;
+}
+
+.tab {
+  flex: 1;
+  padding: 12px 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  text-align: center;
+}
+
+.tab:hover {
+  color: var(--color-text);
+  background: rgba(0,0,0,0.03);
+}
+
+.tabActive {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  background: rgba(46, 107, 46, 0.05);
+}
+
+/* ── Scrollable body ────────────────────────────────────────────────────── */
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.tabContent {
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Shared section styling ─────────────────────────────────────────────── */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sectionTitle {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ── Icon bubble rows (Activities / Landscape / Wildlife) ───────────────── */
+
+.bubbleRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.iconBubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-accent);
+  cursor: default;
+  transition: border-color 0.1s, background 0.1s;
+}
+
+.iconBubble:hover {
+  background: var(--color-panel);
+  border-color: var(--color-accent);
+}
+
+.iconBubble span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+
+.iconBubble svg {
+  width: 18px;
+  height: 18px;
+}
+
+.dotBubble {
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: default;
+  flex-shrink: 0;
+}
+
+/* ── Amenity chips ──────────────────────────────────────────────────────── */
+
+.amenityChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.amenityChip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.amenityIcon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* ── Inline processing note ─────────────────────────────────────────────── */
+
+.processingInline {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ── Description text ───────────────────────────────────────────────────── */
+
+.description {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.meta {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.reserveLink {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+  padding: 10px 16px;
+  border: 2px solid var(--color-primary);
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+  text-align: center;
+}
+
+.reserveLink:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ── Compact alerts ─────────────────────────────────────────────────────── */
+
+.alertsCompact {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: color-mix(in srgb, var(--color-danger) 5%, var(--color-bg) 95%);
+  border: 1px solid color-mix(in srgb, var(--color-danger) 25%, var(--color-border) 75%);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.alertCompactRow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.alertCompactBadge {
+  flex-shrink: 0;
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.alertCompactTitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.alertCompactMore {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ── Weather Grid (Enhanced 7-day) ──────────────────────────────────────── */
+
+.staleWarning {
+  padding: 8px 12px;
+  background: #e8d8a0;
+  border: 1px solid var(--color-stale);
+  border-radius: 8px;
+  font-size: 12px;
+  color: #5a3e00;
+  font-weight: 500;
+}
+
+.wxGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wxCard {
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.wxCardHeader {
+  padding: 8px 12px;
+  background: rgba(46, 107, 46, 0.08);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.wxCardWeekday {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.wxCardDate {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.wxCardPeriod {
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 4px 10px;
+  align-items: center;
+}
+
+.wxCardPeriod:not(:last-child) {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.wxCardLabel {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+.wxCardEmoji {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.wxCardTemp {
+  grid-column: 3;
+  grid-row: 1;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text);
+  text-align: right;
+}
+
+.wxCardForecast {
+  grid-column: 2 / 4;
+  grid-row: 2;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+/* ── Availability Status Cards ──────────────────────────────────────────── */
+
+.availStatusCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+}
+
+.availStatusGood {
+  background: rgba(46, 107, 46, 0.1);
+  border-color: var(--color-primary);
+}
+
+.availStatusNone {
+  background: rgba(0,0,0,0.03);
+  border-color: var(--color-border);
+}
+
+.availIcon {
+  flex-shrink: 0;
+  font-size: 24px;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.availText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.availText strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+.availText p {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ── Sites List ─────────────────────────────────────────────────────────── */
+
+.sitesList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.siteCard {
+  padding: 12px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.siteHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.siteName {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.siteLoop {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.siteType {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  padding: 3px 8px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 6px;
+  align-self: flex-start;
+}
+
+.siteDates {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.siteDatesLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+.siteDatesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.siteDateChip {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
