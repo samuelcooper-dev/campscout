@@ -125,17 +125,27 @@ if __name__ == "__main__":
     parser.add_argument(
         "--weather-availability",
         action="store_true",
-        help="Run daily weather + availability sync for all regions (default).",
+        help="Run daily weather + availability sync.",
     )
     parser.add_argument(
         "--national",
         action="store_true",
         help="Run the national metadata pipeline (all 6 regions, includes metadata).",
     )
+    parser.add_argument(
+        "--region",
+        type=str,
+        choices=ALL_REGIONS,
+        help="Run for a single region only (used with --weather-availability for parallel execution).",
+    )
     args = parser.parse_args()
 
     if args.national:
         national_metadata_pipeline()
+    elif args.region:
+        # Single region sync (for GitHub Actions matrix strategy)
+        log.info(f"Running availability sync for single region: {args.region}")
+        pipeline(regions=[args.region], availability_regions=[args.region], availability_only=True)
     else:
-        # Daily sync: availability only (skip metadata)
+        # All regions sync (backward compatible)
         pipeline(regions=ALL_REGIONS, availability_regions=ALL_REGIONS, availability_only=True)

@@ -166,9 +166,47 @@ cd frontend && npm install && npm run dev
 
 ---
 
-## What I'd Do Next
+## Recent Updates (November 2026)
 
-- **Saved searches and alerts** — users set a region + date window and get notified when a site opens up; the availability table already has the data, it just needs a notification layer on top
-- **LLM-assisted tag extraction** — the rule-based extractor misses nuance in longer descriptions; a lightweight model fine-tuned on campground text would increase tag recall without adding latency to the pipeline (batch offline, not in-request)
-- **Mobile-first layout** — the map dashboard works on mobile but wasn't designed for it; a bottom-sheet detail panel and touch-optimized marker clustering would make it usable for trip planning on the road
-- **Metadata refresh pipeline** — amenities, photos, and descriptions change infrequently; a separate weekly or on-demand metadata sync would keep core data fresh without daily API overhead
+### Pipeline Optimization
+- **Fixed 28-day data staleness issue** — Switched from sequential to parallel region processing using GitHub Actions matrix strategy
+- **90-minute timeout eliminated** — Each region now runs in parallel (6 jobs simultaneously), completing in ~20 minutes total
+- **Improved reliability** — Failed regions don't block others with `fail-fast: false`
+
+### UI Redesign
+- **Modernized homepage** — New animated hero section with live stats, gradient backgrounds, and smooth transitions
+- **Enhanced visual hierarchy** — Larger typography, better spacing, improved card designs with hover effects
+- **Demo mode polish** — Clear visual treatment for disabled regions with overlay and badges
+- **Improved accessibility** — Better contrast ratios, 44px+ touch targets, WCAG AA compliance
+
+### Error Handling
+- Added React ErrorBoundary components throughout app
+- User-friendly error messages with recovery actions
+- Component-level resilience
+
+---
+
+## Future Features
+
+See [ROADMAP.md](ROADMAP.md) for detailed plans. Highlights include:
+
+**Phase 1 (Q1 2027):**
+- Smart search with natural language queries
+- Quick filter chips for common scenarios
+- Voice search (mobile)
+
+**Phase 2 (Q2 2027):**
+- Multi-day trip planner with route visualization
+- Campground comparison tool (side-by-side)
+- Shareable trip links
+
+**Phase 3 (Q3 2027):**
+- Availability heatmap calendar
+- Interactive weather graphs
+- Enhanced data visualizations
+
+**Phase 4+ (2027-2028):**
+- AI-powered recommendations
+- User accounts with saved favorites
+- Availability alerts
+- Mobile app
