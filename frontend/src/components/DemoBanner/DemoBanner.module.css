@@ -3,20 +3,22 @@
   align-items: center;
   justify-content: center;
   gap: 8px; /* 4-point grid */
-  padding: 10px 16px; /* Increased from 8px for better touch target */
-  background: rgba(46, 107, 46, 0.2); /* Increased opacity from 0.15 */
-  border-bottom: 1px solid rgba(46, 107, 46, 0.35); /* Increased from 0.25 for better definition */
-  font-size: 12px;
-  font-weight: 700; /* Increased from 600 for better clarity */
-  color: #d4b880; /* Lightened from #c8a870 for better contrast on dark green */
-  letter-spacing: 0.05em; /* Increased from 0.03em */
+  padding: 10px 16px;
+  background: rgba(200, 168, 112, 0.25); /* Warm amber background for better visibility */
+  border-bottom: 2px solid rgba(200, 168, 112, 0.6); /* Stronger border */
+  font-size: 13px; /* Increased from 12px for better readability */
+  font-weight: 700;
+  color: #e8dfc8; /* Bright cream for strong contrast */
+  letter-spacing: 0.05em;
   text-transform: uppercase;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Add text shadow for legibility */
 }
 
 .icon {
-  font-size: 14px;
+  font-size: 16px; /* Increased from 14px for better emoji visibility */
   line-height: 1;
-  opacity: 0.9;
+  opacity: 1; /* Full opacity for emoji visibility */
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3)); /* Shadow for emoji depth */
 }
 
 .text {
@@ -25,11 +27,11 @@
 
 @media (max-width: 768px) {
   .banner {
-    font-size: 11px;
-    padding: 6px 12px;
+    font-size: 12px; /* Keep readable on mobile */
+    padding: 8px 12px;
   }
 
   .icon {
-    font-size: 12px;
+    font-size: 14px; /* Keep emoji visible on mobile */
   }
 }

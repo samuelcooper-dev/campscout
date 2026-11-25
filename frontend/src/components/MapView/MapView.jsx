@@ -39,7 +39,7 @@ function makeCampgroundSVG(fill, terrainColor, wildlifeIconInner) {
 }
 
 function makeCampgroundIcon(cg, isSelected) {
-  const fill = isSelected ? '#2e6b2e' : '#c4622d'
+  const fill = isSelected ? '#2e6b2e' : '#7a6248' // Grey out unselected campgrounds
   const terrainColor = primaryTerrainColor(cg.terrain_tags)
   const wildlifeGroup = primaryWildlifeGroup(cg.wildlife_tags)
   const wildlifeInner = wildlifeGroup ? getWildlifeIconInner(wildlifeGroup) : null
