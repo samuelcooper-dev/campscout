@@ -19,17 +19,17 @@ const DEFAULT_ZOOM = 7
 
 // ── Campground marker (single SVG — no overflow issues) ───────────────────
 
-function makeCampgroundSVG(fill, terrainColor, wildlifeIconInner) {
+function makeCampgroundSVG(fill, terrainColor, wildlifeIconInner, opacity = 1) {
   const ring = terrainColor
-    ? `<circle cx="16" cy="18" r="17" fill="none" stroke="${terrainColor}" stroke-width="3.5" opacity="0.88"/>`
+    ? `<circle cx="16" cy="18" r="17" fill="none" stroke="${terrainColor}" stroke-width="3.5" opacity="${opacity * 0.88}"/>`
     : ''
 
   const badge = wildlifeIconInner
-    ? `<circle cx="33" cy="-6" r="9" fill="#2c1f0e" stroke="#c8a870" stroke-width="1.4"/>
-       <g transform="translate(33,-6) scale(0.58) translate(-12,-12)" fill="#e09050">${wildlifeIconInner}</g>`
+    ? `<circle cx="33" cy="-6" r="9" fill="#2c1f0e" stroke="#c8a870" stroke-width="1.4" opacity="${opacity}"/>
+       <g transform="translate(33,-6) scale(0.58) translate(-12,-12)" fill="#e09050" opacity="${opacity}">${wildlifeIconInner}</g>`
     : ''
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -14 44 52" width="44" height="52">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -14 44 52" width="44" height="52" opacity="${opacity}">
     ${ring}
     <polygon points="16,2 30,28 2,28" fill="${fill}" stroke="#2c1f0e" stroke-width="1.6" stroke-linejoin="round"/>
     <line x1="2" y1="28" x2="30" y2="28" stroke="#2c1f0e" stroke-width="2"/>
@@ -39,13 +39,14 @@ function makeCampgroundSVG(fill, terrainColor, wildlifeIconInner) {
 }
 
 function makeCampgroundIcon(cg, isSelected) {
-  const fill = isSelected ? '#2e6b2e' : '#7a6248' // Grey out unselected campgrounds
+  const fill = isSelected ? '#2e6b2e' : '#5a5a5a' // Much more grey for unselected
+  const opacity = isSelected ? 1.0 : 0.4 // Fade out unselected markers significantly
   const terrainColor = primaryTerrainColor(cg.terrain_tags)
   const wildlifeGroup = primaryWildlifeGroup(cg.wildlife_tags)
   const wildlifeInner = wildlifeGroup ? getWildlifeIconInner(wildlifeGroup) : null
 
   return L.divIcon({
-    html: makeCampgroundSVG(fill, terrainColor, wildlifeInner),
+    html: makeCampgroundSVG(fill, terrainColor, wildlifeInner, opacity),
     className: 'campground-marker',
     iconSize: [44, 52],
     iconAnchor: [22, 48],

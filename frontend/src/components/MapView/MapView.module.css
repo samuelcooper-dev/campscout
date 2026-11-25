@@ -34,15 +34,15 @@
   box-shadow: 0 1px 4px rgba(0,0,0,0.4);
 }
 
-/* Tooltip styling for campground names */
+/* Tooltip styling for campground names - HIGH CONTRAST */
 :global(.leaflet-tooltip) {
-  background: rgba(44, 31, 14, 0.95) !important;
-  color: #e8dfc8 !important;
-  border: 2px solid #c8a870 !important;
-  border-radius: 6px !important;
-  padding: 6px 12px !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
-  letter-spacing: 0.02em !important;
+  background: #2c1f0e !important; /* Solid dark background */
+  color: #ffffff !important; /* Pure white text for maximum contrast */
+  border: 3px solid #c8a870 !important; /* Thicker border */
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.7) !important;
+  letter-spacing: 0.03em !important;
 }
