@@ -17,55 +17,65 @@
     repeating-linear-gradient(
       45deg,
       var(--color-primary),
-      var(--color-primary) 20px,
-      rgba(0, 0, 0, 0.05) 20px,
-      rgba(0, 0, 0, 0.05) 21px
+      var(--color-primary) 15px,
+      rgba(0, 0, 0, 0.15) 15px,
+      rgba(0, 0, 0, 0.15) 18px
     );
   color: #fff;
-  border-bottom: 3px solid rgba(139, 94, 60, 0.6);
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 5px solid rgba(139, 94, 60, 0.9);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 2px 4px rgba(0, 0, 0, 0.2);
+    inset 0 2px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.3);
   position: relative;
 }
 
-/* Vintage paper texture overlay on topbar */
+/* Strong vintage paper texture overlay on topbar */
 .topBar::before {
   content: '';
   position: absolute;
   inset: 0;
   background-image:
-    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.02) 2px, rgba(0, 0, 0, 0.02) 4px),
-    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.02) 2px, rgba(0, 0, 0, 0.02) 4px);
-  opacity: 0.3;
+    repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, 0.08) 3px, rgba(0, 0, 0, 0.08) 6px),
+    repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0, 0, 0, 0.08) 3px, rgba(0, 0, 0, 0.08) 6px);
+  opacity: 0.5;
   pointer-events: none;
 }
 
 .logo {
   font-weight: 900;
-  font-size: 18px;
-  letter-spacing: 0.08em;
+  font-size: 20px;
+  letter-spacing: 0.15em;
   white-space: nowrap;
   text-transform: uppercase;
   color: #fff;
-  background: none;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.15);
+  border: 3px solid rgba(200, 168, 112, 0.4);
+  padding: 8px 16px;
+  border-radius: 2px;
   cursor: pointer;
   flex-shrink: 0;
   transition: all 0.15s;
   text-shadow:
-    2px 2px 0px rgba(0, 0, 0, 0.4),
-    -1px -1px 0px rgba(255, 255, 255, 0.1);
+    3px 3px 0px rgba(0, 0, 0, 0.6),
+    -1px -1px 0px rgba(255, 255, 255, 0.2),
+    0 0 10px rgba(0, 0, 0, 0.3);
   position: relative;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3),
+    2px 2px 0 rgba(0, 0, 0, 0.3);
 }
 
 .logo:hover {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.25);
+  border-color: rgba(200, 168, 112, 0.6);
   text-shadow:
-    3px 3px 0px rgba(0, 0, 0, 0.5),
-    -1px -1px 0px rgba(255, 255, 255, 0.15);
+    4px 4px 0px rgba(0, 0, 0, 0.7),
+    -1px -1px 0px rgba(255, 255, 255, 0.25),
+    0 0 15px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1px);
 }
 
 .navDivider {

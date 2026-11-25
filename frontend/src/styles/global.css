@@ -29,21 +29,28 @@
   font-size: 14px;
   color: var(--color-text);
 
-  /* Topographic Map Background Pattern */
+  /* Dramatic Topographic Map Background Pattern */
   background-image:
     repeating-linear-gradient(
       0deg,
       transparent,
-      transparent 50px,
-      rgba(139, 94, 60, 0.03) 50px,
-      rgba(139, 94, 60, 0.03) 51px
+      transparent 30px,
+      rgba(139, 94, 60, 0.15) 30px,
+      rgba(139, 94, 60, 0.15) 32px
     ),
     repeating-linear-gradient(
       90deg,
       transparent,
-      transparent 50px,
-      rgba(139, 94, 60, 0.03) 50px,
-      rgba(139, 94, 60, 0.03) 51px
+      transparent 30px,
+      rgba(139, 94, 60, 0.15) 30px,
+      rgba(139, 94, 60, 0.15) 32px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 60px,
+      rgba(139, 94, 60, 0.08) 60px,
+      rgba(139, 94, 60, 0.08) 61px
     );
   background-color: var(--color-bg);
 }

@@ -90,7 +90,7 @@
   z-index: 0;
 }
 
-/* Topographic contour lines */
+/* Dramatic topographic contour lines */
 .heroPattern {
   position: absolute;
   inset: 0;
@@ -98,19 +98,32 @@
     repeating-linear-gradient(
       45deg,
       transparent,
-      transparent 80px,
-      rgba(200, 168, 112, 0.08) 80px,
-      rgba(200, 168, 112, 0.08) 82px
+      transparent 50px,
+      rgba(200, 168, 112, 0.25) 50px,
+      rgba(200, 168, 112, 0.25) 53px
     ),
     repeating-linear-gradient(
       -45deg,
       transparent,
-      transparent 80px,
-      rgba(200, 168, 112, 0.06) 80px,
-      rgba(200, 168, 112, 0.06) 82px
+      transparent 50px,
+      rgba(200, 168, 112, 0.2) 50px,
+      rgba(200, 168, 112, 0.2) 53px
     ),
-    radial-gradient(circle at 50% 50%, transparent 30%, rgba(200, 168, 112, 0.03) 70%);
-  opacity: 0.7;
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 100px,
+      rgba(200, 168, 112, 0.15) 100px,
+      rgba(200, 168, 112, 0.15) 103px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 100px,
+      rgba(200, 168, 112, 0.15) 100px,
+      rgba(200, 168, 112, 0.15) 103px
+    );
+  opacity: 1;
 }
 
 @keyframes patternMove {
@@ -133,23 +146,41 @@
   font-size: 72px;
   font-weight: 900;
   line-height: 1.1;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.15em;
   color: #e8dfc8;
   margin: 0;
   text-transform: uppercase;
   text-shadow:
-    3px 3px 0px rgba(0, 0, 0, 0.3),
-    -1px -1px 0px rgba(200, 168, 112, 0.1);
+    5px 5px 0px rgba(0, 0, 0, 0.6),
+    -2px -2px 0px rgba(200, 168, 112, 0.3),
+    0 0 20px rgba(0, 0, 0, 0.5);
   animation: fadeInUp 0.8s ease-out;
   position: relative;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  border: 8px solid rgba(200, 168, 112, 0.4);
+  padding: 32px 48px;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0.2) 10px,
+      rgba(0, 0, 0, 0.3) 10px,
+      rgba(0, 0, 0, 0.3) 20px
+    );
+  box-shadow:
+    inset 0 4px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -4px 0 rgba(0, 0, 0, 0.4),
+    8px 8px 0 rgba(0, 0, 0, 0.4);
+  transform: rotate(-1deg);
 }
 
 .heroTitleAccent {
   display: block;
   color: #c8a870;
   text-shadow:
-    3px 3px 0px rgba(0, 0, 0, 0.4),
-    -1px -1px 0px rgba(200, 168, 112, 0.2);
+    5px 5px 0px rgba(0, 0, 0, 0.7),
+    -2px -2px 0px rgba(255, 255, 255, 0.2),
+    0 0 25px rgba(200, 168, 112, 0.5);
 }
 
 @keyframes fadeInUp {
@@ -176,22 +207,43 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 18px 36px;
-  background: linear-gradient(135deg, #2e6b2e 0%, #1a3d1a 100%);
+  padding: 20px 40px;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      #2e6b2e,
+      #2e6b2e 8px,
+      rgba(0, 0, 0, 0.2) 8px,
+      rgba(0, 0, 0, 0.2) 16px
+    );
   color: #fff;
-  font-weight: 700;
-  font-size: 17px;
-  border-radius: 12px;
+  font-weight: 900;
+  font-size: 18px;
+  border-radius: 2px;
   text-decoration: none;
-  box-shadow: 0 8px 32px rgba(46, 107, 46, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.3),
+    6px 6px 0 rgba(0, 0, 0, 0.4);
   transition: transform 0.2s, box-shadow 0.2s;
   animation: fadeInUp 0.8s ease-out 0.4s both;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 6px solid rgba(200, 168, 112, 0.6);
+  text-shadow:
+    2px 2px 0px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(0, 0, 0, 0.3);
+  font-family: 'Georgia', 'Times New Roman', serif;
+  transform: rotate(0.5deg);
 }
 
 .heroCta:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(46, 107, 46, 0.6);
+  transform: translateY(-4px) rotate(0.5deg);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.3),
+    8px 8px 0 rgba(0, 0, 0, 0.5);
+  border-color: rgba(200, 168, 112, 0.8);
 }
 
 .ctaArrow {
@@ -284,16 +336,24 @@
 .step {
   position: relative;
   padding: 40px 32px;
-  background: rgba(25, 25, 16, 0.6);
-  border: 3px solid rgba(200, 168, 112, 0.3);
-  border-radius: 8px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(25, 25, 16, 0.6),
+      rgba(25, 25, 16, 0.6) 8px,
+      rgba(25, 25, 16, 0.7) 8px,
+      rgba(25, 25, 16, 0.7) 16px
+    );
+  border: 6px solid rgba(200, 168, 112, 0.6);
+  border-radius: 2px;
   transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
   box-shadow:
-    inset 0 0 40px rgba(0, 0, 0, 0.2),
-    0 4px 12px rgba(0, 0, 0, 0.2);
+    inset 0 3px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.4),
+    4px 4px 0 rgba(0, 0, 0, 0.3);
 }
 
-/* Subtle paper grain */
+/* Strong paper grain */
 .step::before {
   content: '';
   position: absolute;
@@ -302,20 +362,22 @@
     repeating-linear-gradient(
       45deg,
       transparent,
-      transparent 2px,
-      rgba(200, 168, 112, 0.02) 2px,
-      rgba(200, 168, 112, 0.02) 4px
+      transparent 3px,
+      rgba(200, 168, 112, 0.08) 3px,
+      rgba(200, 168, 112, 0.08) 6px
     );
-  border-radius: 8px;
+  border-radius: 2px;
   pointer-events: none;
+  opacity: 0.7;
 }
 
 .step:hover {
   transform: translateY(-8px);
-  border-color: rgba(200, 168, 112, 0.6);
+  border-color: rgba(200, 168, 112, 0.9);
   box-shadow:
-    inset 0 0 40px rgba(0, 0, 0, 0.2),
-    0 16px 48px rgba(0, 0, 0, 0.4);
+    inset 0 3px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.4),
+    6px 6px 0 rgba(0, 0, 0, 0.4);
 }
 
 .stepNumber {
@@ -372,20 +434,31 @@
   align-items: center;
   gap: 24px;
   padding: 32px;
-  background: linear-gradient(135deg, #2e6b2e 0%, #1a3d1a 100%);
-  border: 3px solid rgba(200, 168, 112, 0.4);
-  border-radius: 8px;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      #2e6b2e,
+      #2e6b2e 8px,
+      rgba(0, 0, 0, 0.15) 8px,
+      rgba(0, 0, 0, 0.15) 16px
+    );
+  border: 8px solid rgba(200, 168, 112, 0.8);
+  border-radius: 2px;
   cursor: pointer;
   text-align: left;
   transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
   overflow: hidden;
   min-height: 140px;
   box-shadow:
-    inset 0 0 60px rgba(0, 0, 0, 0.2),
-    0 4px 12px rgba(0, 0, 0, 0.3);
+    inset 0 4px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -4px 0 rgba(0, 0, 0, 0.3),
+    inset 4px 0 0 rgba(255, 255, 255, 0.1),
+    inset -4px 0 0 rgba(0, 0, 0, 0.2),
+    6px 6px 0 rgba(0, 0, 0, 0.3);
+  transform: rotate(-0.5deg);
 }
 
-/* Vintage paper texture */
+/* Strong vintage paper texture */
 .regionCard::before {
   content: '';
   position: absolute;
@@ -394,18 +467,18 @@
     repeating-linear-gradient(
       0deg,
       transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.03) 2px,
-      rgba(0, 0, 0, 0.03) 4px
+      transparent 4px,
+      rgba(0, 0, 0, 0.12) 4px,
+      rgba(0, 0, 0, 0.12) 8px
     ),
     repeating-linear-gradient(
       90deg,
       transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.03) 2px,
-      rgba(0, 0, 0, 0.03) 4px
+      transparent 4px,
+      rgba(0, 0, 0, 0.12) 4px,
+      rgba(0, 0, 0, 0.12) 8px
     );
-  opacity: 0.3;
+  opacity: 0.6;
   pointer-events: none;
 }
 
@@ -425,11 +498,14 @@
 }
 
 .regionCard:hover {
-  transform: translateY(-4px);
+  transform: translateY(-4px) rotate(-0.5deg);
   box-shadow:
-    inset 0 0 60px rgba(0, 0, 0, 0.2),
-    0 20px 60px rgba(0, 0, 0, 0.5);
-  border-color: rgba(200, 168, 112, 0.7);
+    inset 0 4px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -4px 0 rgba(0, 0, 0, 0.3),
+    inset 4px 0 0 rgba(255, 255, 255, 0.1),
+    inset -4px 0 0 rgba(0, 0, 0, 0.2),
+    8px 8px 0 rgba(0, 0, 0, 0.4);
+  border-color: rgba(200, 168, 112, 1);
 }
 
 .regionIcon {
